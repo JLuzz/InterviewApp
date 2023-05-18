@@ -1,8 +1,8 @@
-import "./App.css";
-
 import { useEffect, useState } from "react";
-import NavigationBar from "./pages/NavigationBar";
 import axios from "axios";
+import NavigationBar from "./pages/NavigationBar";
+
+import "./App.css";
 
 export const App = () => {
   const baseURL = "http://localhost:7071";
@@ -43,7 +43,6 @@ export const App = () => {
       }}
     >
       <NavigationBar />
-      {/* TODO : extract this component */}
       <div
         // TODO: Styles can be defined in a seperate file using mui useStyle
         style={{
