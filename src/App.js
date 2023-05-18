@@ -68,7 +68,7 @@ export const App = () => {
             }}
           >
             <div> {images.length} total images </div>
-            <div> Index: {currentImageIndex} </div>
+            <div> Current Image: {currentImageIndex + 1} </div>
           </div>
           {images.length > 0 && (
             <img src={images[currentImageIndex].jpg} alt="current-scan" />
