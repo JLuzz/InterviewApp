@@ -52,6 +52,7 @@ export const App = () => {
           justifyContent: "center",
           alignItems: "center",
           alignContent: "center",
+          gap: "24px",
           width: "85%",
           height: "100%",
         }}
