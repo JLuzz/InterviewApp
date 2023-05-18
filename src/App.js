@@ -1,5 +1,4 @@
 import "./App.css";
-import logo from './logo.svg';
 
 import { useEffect, useState } from "react";
 import NavigationBar from "./pages/NavigationBar";
@@ -9,6 +8,9 @@ function App() {
   const baseURL = "http://localhost:7071";
   const [images, setImages] = useState([]);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  const handleNextImage = () => setCurrentImageIndex(currentImageIndex + 1);
+  const handlePreviousImage = () => setCurrentImageIndex(currentImageIndex - 1);
 
   //TODO: API functions (more to be added) should be in their own file!
   const getEvents = () => {
@@ -51,8 +53,7 @@ function App() {
           height: "100%",
         }}
       >
-        {/* TODO: This button does nothing!  */}
-        <button type="button">Previous Image</button>
+        <button type="button" onClick={handlePreviousImage}>Previous Image</button>
         <div>
           <div
             style={{
@@ -64,7 +65,7 @@ function App() {
             <div> {images.length} total images </div>
             <div> Index: {currentImageIndex} </div>
           </div>
-          {images.length > 0 && <img src={images[currentImageIndex].jpg} />}
+          {images.length > 0 && <img src={images[currentImageIndex].jpg}/>}
           {images[currentImageIndex]?.createdOn && (
             <div> Scan Timestamp: {images[currentImageIndex].createdOn} </div>
           )}
@@ -72,8 +73,7 @@ function App() {
           <div> Image Metadata: INCOMPLETE </div>
           <div> Number of Detections: INCOMPLETE </div>
         </div>
-        {/* TODO: This button also does nothing  */}
-        <button type="button">Next Image</button>
+        <button type="button" onClick={handleNextImage}>Next Image</button>
       </div>
     </div>
   );
