@@ -88,7 +88,6 @@ export const EventViewer = ({ images }) => {
         Previous Image
       </button>
       <div>
-        {/* extract header */}
         <div className={classes.header}>
           <div>
             <input
@@ -108,8 +107,7 @@ export const EventViewer = ({ images }) => {
         )}
         {filteredImages[currentImageIndex]?.createdOn && (
           <div>
-            {" "}
-            Scan Timestamp: {filteredImages[currentImageIndex].createdOn}{" "}
+            Scan Timestamp: {filteredImages[currentImageIndex].createdOn}
           </div>
         )}
         {/* TODO: Finish adding image metadata!  */}
