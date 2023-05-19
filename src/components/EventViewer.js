@@ -58,7 +58,7 @@ export const EventViewer = ({ images }) => {
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [handleNextImage, handlePreviousImage, images.length]);
+  }, [handleNextImage, handlePreviousImage]);
 
   useEffect(() => {
     setCurrentImageIndex(0);
@@ -88,6 +88,7 @@ export const EventViewer = ({ images }) => {
         Previous Image
       </button>
       <div>
+        {/* extract header */}
         <div className={classes.header}>
           <div>
             <input
