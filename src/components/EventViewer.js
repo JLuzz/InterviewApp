@@ -61,6 +61,8 @@ export const EventViewer = ({ images }) => {
   }, [handleNextImage, handlePreviousImage, images.length]);
 
   useEffect(() => {
+    setCurrentImageIndex(0);
+
     if (detectionOnly) {
       setFilteredImages(
         images.filter((image) => image.detectionsList.length > 0)
