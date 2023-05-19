@@ -12,7 +12,7 @@ const useStyles = createUseStyles({
     width: "85%",
     height: "100%",
   },
-  viewer: {
+  header: {
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
@@ -22,13 +22,15 @@ const useStyles = createUseStyles({
 export const EventViewer = ({ images }) => {
   const classes = useStyles();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [detectionOnly, setDetectionOnly] = useState(false);
+  const [filteredImages, setFilteredImages] = useState(images);
 
   const handleNextImage = useCallback(
     () =>
       setCurrentImageIndex((currentImageIndex) =>
-        Math.min(currentImageIndex + 1, images.length - 1)
+        Math.min(currentImageIndex + 1, filteredImages.length - 1)
       ),
-    [images.length]
+    [filteredImages.length]
   );
   const handlePreviousImage = useCallback(
     () =>
@@ -37,6 +39,10 @@ export const EventViewer = ({ images }) => {
       ),
     []
   );
+
+  const handleDetectionToggle = (event) => {
+    setDetectionOnly(event.target.checked);
+  };
 
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -52,10 +58,28 @@ export const EventViewer = ({ images }) => {
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [handleNextImage, handlePreviousImage, images.length]);
+  }, [handleNextImage, handlePreviousImage]);
 
+  useEffect(() => {
+    setCurrentImageIndex(0);
+
+    if (detectionOnly) {
+      setFilteredImages(
+        images.filter((image) => image.detectionsList.length > 0)
+      );
+      return;
+    }
+
+    setFilteredImages(images);
+  }, [images, detectionOnly]);
+
+  // TODO : handle returns with appropriate messages
   if (!images.length) {
     return null;
+  }
+
+  if (!filteredImages.length) {
+    return;
   }
 
   return (
@@ -64,15 +88,27 @@ export const EventViewer = ({ images }) => {
         Previous Image
       </button>
       <div>
-        <div className={classes.viewer}>
-          <div> {images.length} total images </div>
-          <div> Current Image: {currentImageIndex + 1} </div>
+        <div className={classes.header}>
+          <div>
+            <input
+              type="checkbox"
+              id="detectionToggle"
+              checked={detectionOnly}
+              onChange={handleDetectionToggle}
+            />
+            <label htmlFor="detectionToggle">Show Detections Only</label>
+          </div>
+          <div>
+            {currentImageIndex + 1} / {filteredImages.length}
+          </div>
         </div>
-        {images.length > 0 && (
-          <img src={images[currentImageIndex].jpg} alt="current-scan" />
+        {filteredImages.length > 0 && (
+          <img src={filteredImages[currentImageIndex].jpg} alt="current-scan" />
         )}
-        {images[currentImageIndex]?.createdOn && (
-          <div> Scan Timestamp: {images[currentImageIndex].createdOn} </div>
+        {filteredImages[currentImageIndex]?.createdOn && (
+          <div>
+            Scan Timestamp: {filteredImages[currentImageIndex].createdOn}
+          </div>
         )}
         {/* TODO: Finish adding image metadata!  */}
         <div> Image Metadata: INCOMPLETE </div>
