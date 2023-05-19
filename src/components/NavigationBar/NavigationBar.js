@@ -1,6 +1,6 @@
-import KuvaLogo from "../media/KuvaLogo.png";
+import KuvaLogo from "./KuvaLogo.png";
 
-function NavigationBar() {
+export const NavigationBar = () => {
   return (
     <div
       style={{
@@ -9,10 +9,8 @@ function NavigationBar() {
         backgroundColor: "#222222",
       }}
     >
-      <img style={{ width: "95%" }} src={KuvaLogo} />
+      <img style={{ width: "95%" }} src={KuvaLogo} alt="kuva-logo" />
       <span style={{ marginTop: "30%", color: "white" }}> Home </span>
     </div>
   );
-}
-
-export default NavigationBar;
+};
