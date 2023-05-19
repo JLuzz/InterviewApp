@@ -1,13 +1,20 @@
+import { styled } from "react-jss";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
 import { EventViewer, NavigationBar } from "./components";
 
-import "./App.css";
+const Page = styled("div")({
+  height: "100vh",
+  display: "flex",
+  flexDirection: "row",
+  textAlign: "center",
+});
 
 export const App = () => {
-  const baseURL = "http://localhost:7071";
   const [images, setImages] = useState([]);
+
+  const baseURL = "http://localhost:7071";
 
   //TODO: API functions (more to be added) should be in their own file!
   const getEvents = () => {
@@ -28,16 +35,9 @@ export const App = () => {
   }, []);
 
   return (
-    <div
-      className="App"
-      style={{
-        height: "100vh",
-        display: "flex",
-        flexDirection: "row",
-      }}
-    >
+    <Page>
       <NavigationBar />
       <EventViewer images={images} />
-    </div>
+    </Page>
   );
 };
