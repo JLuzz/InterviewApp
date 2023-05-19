@@ -22,6 +22,7 @@ const useStyles = createUseStyles({
 export const EventViewer = ({ images }) => {
   const classes = useStyles();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [detectionOnly, setDetectionOnly] = useState(false);
 
   const handleNextImage = useCallback(
     () =>
@@ -37,6 +38,10 @@ export const EventViewer = ({ images }) => {
       ),
     []
   );
+
+  const handleDetectionOnly = (event) => {
+    setDetectionOnly(event.target.checked);
+  };
 
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -65,8 +70,18 @@ export const EventViewer = ({ images }) => {
       </button>
       <div>
         <div className={classes.header}>
-          <div> {images.length} total images </div>
-          <div> Current Image: {currentImageIndex + 1} </div>
+          <div>
+            <input
+              type="checkbox"
+              id="detectionCheckbox"
+              isChecked={detectionOnly}
+              onChange={handleDetectionOnly}
+            />
+            <label for="detectionCheckbox">Show Detections Only</label>
+          </div>
+          <div>
+            {currentImageIndex + 1} / {images.length}
+          </div>
         </div>
         {images.length > 0 && (
           <img src={images[currentImageIndex].jpg} alt="current-scan" />
