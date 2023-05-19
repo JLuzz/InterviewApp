@@ -1,16 +1,20 @@
+import { styled } from "react-jss";
+
 import KuvaLogo from "./KuvaLogo.png";
+
+const Nav = styled("div")({
+  height: "100%",
+  width: "15%",
+  backgroundColor: "#222222",
+});
+const Image = styled("img")({ width: "95%" });
+const Text = styled("span")({ marginTop: "30%", color: "white" });
 
 export const NavigationBar = () => {
   return (
-    <div
-      style={{
-        height: "100%",
-        width: "15%",
-        backgroundColor: "#222222",
-      }}
-    >
-      <img style={{ width: "95%" }} src={KuvaLogo} alt="kuva-logo" />
-      <span style={{ marginTop: "30%", color: "white" }}> Home </span>
-    </div>
+    <Nav>
+      <Image src={KuvaLogo} alt="kuva-logo" />
+      <Text> Home </Text>
+    </Nav>
   );
 };

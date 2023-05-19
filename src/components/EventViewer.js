@@ -1,6 +1,26 @@
 import { useCallback, useEffect, useState } from "react";
+import { createUseStyles } from "react-jss";
+
+const useStyles = createUseStyles({
+  layout: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    alignContent: "center",
+    gap: "24px",
+    width: "85%",
+    height: "100%",
+  },
+  viewer: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+});
 
 export const EventViewer = ({ images }) => {
+  const classes = useStyles();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const handleNextImage = useCallback(
@@ -39,30 +59,12 @@ export const EventViewer = ({ images }) => {
   }
 
   return (
-    <div
-      // TODO: Styles can be defined in a seperate file using mui useStyle
-      style={{
-        display: "flex",
-        flexDirection: "row",
-        justifyContent: "center",
-        alignItems: "center",
-        alignContent: "center",
-        gap: "24px",
-        width: "85%",
-        height: "100%",
-      }}
-    >
+    <div className={classes.layout}>
       <button type="button" onClick={handlePreviousImage}>
         Previous Image
       </button>
       <div>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
-          }}
-        >
+        <div className={classes.viewer}>
           <div> {images.length} total images </div>
           <div> Current Image: {currentImageIndex + 1} </div>
         </div>
