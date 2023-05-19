@@ -12,7 +12,7 @@ const useStyles = createUseStyles({
     width: "85%",
     height: "100%",
   },
-  viewer: {
+  header: {
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
@@ -64,7 +64,7 @@ export const EventViewer = ({ images }) => {
         Previous Image
       </button>
       <div>
-        <div className={classes.viewer}>
+        <div className={classes.header}>
           <div> {images.length} total images </div>
           <div> Current Image: {currentImageIndex + 1} </div>
         </div>
