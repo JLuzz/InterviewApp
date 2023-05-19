@@ -23,13 +23,14 @@ export const EventViewer = ({ images }) => {
   const classes = useStyles();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [detectionOnly, setDetectionOnly] = useState(false);
+  const [filteredImages, setFilteredImages] = useState(images);
 
   const handleNextImage = useCallback(
     () =>
       setCurrentImageIndex((currentImageIndex) =>
-        Math.min(currentImageIndex + 1, images.length - 1)
+        Math.min(currentImageIndex + 1, filteredImages.length - 1)
       ),
-    [images.length]
+    [filteredImages.length]
   );
   const handlePreviousImage = useCallback(
     () =>
@@ -39,7 +40,7 @@ export const EventViewer = ({ images }) => {
     []
   );
 
-  const handleDetectionOnly = (event) => {
+  const handleDetectionToggle = (event) => {
     setDetectionOnly(event.target.checked);
   };
 
@@ -59,8 +60,24 @@ export const EventViewer = ({ images }) => {
     };
   }, [handleNextImage, handlePreviousImage, images.length]);
 
+  useEffect(() => {
+    if (detectionOnly) {
+      setFilteredImages(
+        images.filter((image) => image.detectionsList.length > 0)
+      );
+      return;
+    }
+
+    setFilteredImages(images);
+  }, [images, detectionOnly]);
+
+  // TODO : handle returns with appropriate messages
   if (!images.length) {
     return null;
+  }
+
+  if (!filteredImages.length) {
+    return;
   }
 
   return (
@@ -73,21 +90,24 @@ export const EventViewer = ({ images }) => {
           <div>
             <input
               type="checkbox"
-              id="detectionCheckbox"
-              isChecked={detectionOnly}
-              onChange={handleDetectionOnly}
+              id="detectionToggle"
+              checked={detectionOnly}
+              onChange={handleDetectionToggle}
             />
-            <label for="detectionCheckbox">Show Detections Only</label>
+            <label htmlFor="detectionToggle">Show Detections Only</label>
           </div>
           <div>
-            {currentImageIndex + 1} / {images.length}
+            {currentImageIndex + 1} / {filteredImages.length}
           </div>
         </div>
-        {images.length > 0 && (
-          <img src={images[currentImageIndex].jpg} alt="current-scan" />
+        {filteredImages.length > 0 && (
+          <img src={filteredImages[currentImageIndex].jpg} alt="current-scan" />
         )}
-        {images[currentImageIndex]?.createdOn && (
-          <div> Scan Timestamp: {images[currentImageIndex].createdOn} </div>
+        {filteredImages[currentImageIndex]?.createdOn && (
+          <div>
+            {" "}
+            Scan Timestamp: {filteredImages[currentImageIndex].createdOn}{" "}
+          </div>
         )}
         {/* TODO: Finish adding image metadata!  */}
         <div> Image Metadata: INCOMPLETE </div>
