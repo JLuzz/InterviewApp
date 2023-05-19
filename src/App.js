@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
-import NavigationBar from "./pages/NavigationBar";
+import NavigationBar from "./components/NavigationBar";
 
 import "./App.css";
 
@@ -69,6 +69,7 @@ export const App = () => {
       }}
     >
       <NavigationBar />
+      
       <div
         // TODO: Styles can be defined in a seperate file using mui useStyle
         style={{
