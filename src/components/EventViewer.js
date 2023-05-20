@@ -124,7 +124,7 @@ export const EventViewer = ({ images }) => {
           <div>
             {`Confidence: ${Math.floor(
               filteredImages[currentImageIndex].overallConf
-            )} %`}
+            )}%`}
           </div>
         )}
       </div>
