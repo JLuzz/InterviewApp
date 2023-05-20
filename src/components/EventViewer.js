@@ -107,12 +107,26 @@ export const EventViewer = ({ images }) => {
         )}
         {filteredImages[currentImageIndex]?.createdOn && (
           <div>
-            Scan Timestamp: {filteredImages[currentImageIndex].createdOn}
+            {`Scan Timestamp: ${new Date(
+              filteredImages[currentImageIndex].createdOn
+            ).toLocaleString()}`}
           </div>
         )}
-        {/* TODO: Finish adding image metadata!  */}
-        <div> Image Metadata: INCOMPLETE </div>
-        <div> Number of Detections: INCOMPLETE </div>
+        <div>
+          {`Noise floor metric: ${Math.floor(
+            filteredImages[currentImageIndex].noiseFloorMetric
+          )}`}
+        </div>
+        <div>
+          {` Number of Detections: ${filteredImages[currentImageIndex].detectionsList.length}`}
+        </div>
+        {!!filteredImages[currentImageIndex]?.overallConf && (
+          <div>
+            {`Confidence: ${Math.floor(
+              filteredImages[currentImageIndex].overallConf
+            )} %`}
+          </div>
+        )}
       </div>
       <button type="button" onClick={handleNextImage}>
         Next Image
