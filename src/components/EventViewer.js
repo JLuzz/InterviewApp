@@ -23,6 +23,9 @@ const useStyles = createUseStyles({
     display: "flex",
     gap: 5,
   },
+  progressBar: {
+    backgroundColor: "#f05423",
+  },
 });
 
 export const EventViewer = ({ images }) => {
@@ -138,7 +141,10 @@ export const EventViewer = ({ images }) => {
                 : "N/A"
             }`}</div>
           </div>
-          <Progress value={filteredImages[currentImageIndex].overallConf} />
+          <Progress
+            classNames={{ bar: classes.progressBar }}
+            value={filteredImages[currentImageIndex].overallConf}
+          />
         </div>
       </div>
     </div>
