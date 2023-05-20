@@ -1,5 +1,6 @@
-import { useCallback, useEffect, useState } from "react";
 import { createUseStyles } from "react-jss";
+import { useCallback, useEffect, useState } from "react";
+import { Progress } from "@mantine/core";
 
 const useStyles = createUseStyles({
   layout: {
@@ -16,6 +17,11 @@ const useStyles = createUseStyles({
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
+    paddingBottom: 5,
+  },
+  indexTracker: {
+    display: "flex",
+    gap: 5,
   },
 });
 
@@ -73,20 +79,16 @@ export const EventViewer = ({ images }) => {
     setFilteredImages(images);
   }, [images, detectionOnly]);
 
-  // TODO : handle returns with appropriate messages
   if (!images.length) {
-    return null;
+    return <div>No Images Found</div>;
   }
 
   if (!filteredImages.length) {
-    return;
+    return <div>No Gas Detections Found</div>;
   }
 
   return (
     <div className={classes.layout}>
-      <button type="button" onClick={handlePreviousImage}>
-        Previous Image
-      </button>
       <div>
         <div className={classes.header}>
           <div>
@@ -98,8 +100,14 @@ export const EventViewer = ({ images }) => {
             />
             <label htmlFor="detectionToggle">Show Detections Only</label>
           </div>
-          <div>
-            {currentImageIndex + 1} / {filteredImages.length}
+          <div className={classes.indexTracker}>
+            <div>
+              {currentImageIndex + 1} / {filteredImages.length}
+            </div>
+            <div>
+              <button onClick={handlePreviousImage}>&lt;</button>
+              <button onClick={handleNextImage}>&gt;</button>
+            </div>
           </div>
         </div>
         {filteredImages.length > 0 && (
@@ -120,17 +128,19 @@ export const EventViewer = ({ images }) => {
         <div>
           {` Number of Detections: ${filteredImages[currentImageIndex].detectionsList.length}`}
         </div>
-        {!!filteredImages[currentImageIndex]?.overallConf && (
-          <div>
-            {`Confidence: ${Math.floor(
-              filteredImages[currentImageIndex].overallConf
-            )}%`}
+        <div>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <div>Confidence</div>
+            <div>{`${
+              filteredImages[currentImageIndex].overallConf > 0
+                ? Math.floor(filteredImages[currentImageIndex].overallConf) +
+                  "%"
+                : "N/A"
+            }`}</div>
           </div>
-        )}
+          <Progress value={filteredImages[currentImageIndex].overallConf} />
+        </div>
       </div>
-      <button type="button" onClick={handleNextImage}>
-        Next Image
-      </button>
     </div>
   );
 };
