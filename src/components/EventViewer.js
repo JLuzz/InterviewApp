@@ -6,11 +6,9 @@ import { useCallback, useEffect, useState } from "react";
 const useStyles = createUseStyles({
   layout: {
     display: "flex",
-    flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
     alignContent: "center",
-    gap: "24px",
     width: "85%",
     height: "100%",
   },
