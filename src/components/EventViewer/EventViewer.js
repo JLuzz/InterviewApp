@@ -41,22 +41,6 @@ export const EventViewer = ({ images }) => {
   };
 
   useEffect(() => {
-    const handleKeyDown = (event) => {
-      if (event.key === "ArrowLeft") {
-        handlePreviousImage();
-      } else if (event.key === "ArrowRight") {
-        handleNextImage();
-      }
-    };
-
-    document.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [handleNextImage, handlePreviousImage]);
-
-  useEffect(() => {
     setCurrentImageIndex(0);
 
     if (detectionOnly) {

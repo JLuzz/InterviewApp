@@ -1,5 +1,6 @@
 import { ActionIcon, createStyles, Checkbox } from "@mantine/core";
 import { IconCaretLeft, IconCaretRight } from "@tabler/icons-react";
+import { useEffect } from "react";
 
 const useStyles = createStyles(() => ({
   header: {
@@ -27,6 +28,22 @@ export const Header = ({
   min,
 }) => {
   const { classes } = useStyles();
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === "ArrowLeft") {
+        previous();
+      } else if (event.key === "ArrowRight") {
+        next();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [next, previous]);
 
   return (
     <div className={classes.header}>
