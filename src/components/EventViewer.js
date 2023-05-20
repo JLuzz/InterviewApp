@@ -1,5 +1,6 @@
-import { Checkbox, Progress } from "@mantine/core";
+import { ActionIcon, Checkbox, Progress } from "@mantine/core";
 import { createUseStyles } from "react-jss";
+import { IconCaretLeft, IconCaretRight } from "@tabler/icons-react";
 import { useCallback, useEffect, useState } from "react";
 
 const useStyles = createUseStyles({
@@ -22,6 +23,9 @@ const useStyles = createUseStyles({
   headerItem: {
     display: "flex",
     gap: 5,
+  },
+  indexLabel: {
+    minWidth: 50,
   },
 });
 
@@ -100,13 +104,29 @@ export const EventViewer = ({ images }) => {
             />
             <label htmlFor="detectionToggle">Show Detections Only</label>
           </div>
-          <div className={classes.headerItem}>
-            <div>
-              {currentImageIndex + 1} / {filteredImages.length}
-            </div>
-            <div>
-              <button onClick={handlePreviousImage}>&lt;</button>
-              <button onClick={handleNextImage}>&gt;</button>
+          <div>
+            <div className={classes.headerItem}>
+              <ActionIcon
+                size={20}
+                variant="transparent"
+                onClick={handlePreviousImage}
+                disabled={currentImageIndex === 0}
+                onMouseDown={(event) => event.preventDefault()}
+              >
+                <IconCaretLeft size="1rem" stroke={1.5} />
+              </ActionIcon>
+              <div className={classes.indexLabel}>
+                {currentImageIndex + 1} / {filteredImages.length}
+              </div>
+              <ActionIcon
+                size={20}
+                variant="transparent"
+                onClick={handleNextImage}
+                disabled={currentImageIndex === filteredImages.length - 1}
+                onMouseDown={(event) => event.preventDefault()}
+              >
+                <IconCaretRight size="1rem" stroke={1.5} />
+              </ActionIcon>
             </div>
           </div>
         </div>
