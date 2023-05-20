@@ -18,7 +18,6 @@ const useStyles = createStyles(() => ({
 export const EventViewer = ({ images }) => {
   const { classes } = useStyles();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [detectionOnly, setDetectionOnly] = useState(false);
   const [filteredImages, setFilteredImages] = useState(images);
 
   const handleNextImage = useCallback(
@@ -36,14 +35,10 @@ export const EventViewer = ({ images }) => {
     []
   );
 
-  const handleDetectionToggle = (event) => {
-    setDetectionOnly(event.target.checked);
-  };
-
-  useEffect(() => {
+  const handleDetectionToggle = (checked) => {
     setCurrentImageIndex(0);
 
-    if (detectionOnly) {
+    if (checked) {
       setFilteredImages(
         images.filter((image) => image.detectionsList.length > 0)
       );
@@ -51,7 +46,12 @@ export const EventViewer = ({ images }) => {
     }
 
     setFilteredImages(images);
-  }, [images, detectionOnly]);
+  };
+
+  useEffect(() => {
+    setCurrentImageIndex(0);
+    setFilteredImages(images);
+  }, [images]);
 
   if (!images.length) {
     return <div>No Images Found</div>;
@@ -65,7 +65,6 @@ export const EventViewer = ({ images }) => {
     <div className={classes.layout}>
       <div>
         <Header
-          toggle={detectionOnly}
           handleToggle={handleDetectionToggle}
           next={handleNextImage}
           previous={handlePreviousImage}

@@ -1,6 +1,6 @@
 import { ActionIcon, createStyles, Checkbox } from "@mantine/core";
 import { IconCaretLeft, IconCaretRight } from "@tabler/icons-react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const useStyles = createStyles(() => ({
   header: {
@@ -18,16 +18,14 @@ const useStyles = createStyles(() => ({
   },
 }));
 
-export const Header = ({
-  index,
-  toggle,
-  handleToggle,
-  next,
-  previous,
-  max,
-  min,
-}) => {
+export const Header = ({ index, handleToggle, next, previous, max, min }) => {
   const { classes } = useStyles();
+  const [toggled, setToggled] = useState(false);
+
+  const toggle = (event) => {
+    setToggled(event.target.checked);
+    handleToggle(event.target.checked);
+  };
 
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -50,8 +48,8 @@ export const Header = ({
       <div className={classes.headerItem}>
         <Checkbox
           id="detectionToggle"
-          checked={toggle}
-          onChange={handleToggle}
+          checked={toggled}
+          onChange={toggle}
           size="sm"
         />
         <label htmlFor="detectionToggle">Show Detections Only</label>
