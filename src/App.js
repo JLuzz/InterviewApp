@@ -1,6 +1,7 @@
-import { styled } from "react-jss";
+import { MantineProvider } from "@mantine/core";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import styled from "@emotion/styled";
 
 import { EventViewer, NavigationBar } from "./components";
 
@@ -35,9 +36,32 @@ export const App = () => {
   }, []);
 
   return (
-    <Page>
-      <NavigationBar />
-      <EventViewer images={images} />
-    </Page>
+    <MantineProvider
+      theme={{
+        colors: {
+          brand: [
+            "#F6F2F1",
+            "#E7D8D4",
+            "#DCBFB6",
+            "#D7A697",
+            "#D88D75",
+            "#E0714F",
+            "#F05423",
+            "#D24F25",
+            "#AE4F31",
+            "#914D37",
+            "#7A493A",
+            "#68453A",
+            "#5A4038",
+          ],
+        },
+        primaryColor: "brand",
+      }}
+    >
+      <Page>
+        <NavigationBar />
+        <EventViewer images={images} />
+      </Page>
+    </MantineProvider>
   );
 };
