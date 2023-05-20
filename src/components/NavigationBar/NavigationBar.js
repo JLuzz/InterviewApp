@@ -1,4 +1,4 @@
-import { styled } from "react-jss";
+import styled from "@emotion/styled";
 
 import KuvaLogo from "./KuvaLogo.png";
 

@@ -1,7 +1,7 @@
 import { MantineProvider } from "@mantine/core";
-import { styled } from "react-jss";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import styled from "@emotion/styled";
 
 import { EventViewer, NavigationBar } from "./components";
 
