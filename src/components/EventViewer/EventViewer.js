@@ -1,9 +1,9 @@
-import { ActionIcon, Checkbox, Progress } from "@mantine/core";
-import { createUseStyles } from "react-jss";
-import { IconCaretLeft, IconCaretRight } from "@tabler/icons-react";
+import { createStyles, Progress } from "@mantine/core";
 import { useCallback, useEffect, useState } from "react";
 
-const useStyles = createUseStyles({
+import { Header } from "./Header";
+
+const useStyles = createStyles(() => ({
   layout: {
     display: "flex",
     justifyContent: "center",
@@ -12,27 +12,14 @@ const useStyles = createUseStyles({
     width: "85%",
     height: "100%",
   },
-  header: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    paddingBottom: 5,
-  },
-  headerItem: {
-    display: "flex",
-    gap: 5,
-  },
-  indexLabel: {
-    minWidth: 50,
-  },
   confidenceBar: {
     display: "flex",
     justifyContent: "space-between",
   },
-});
+}));
 
 export const EventViewer = ({ images }) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [detectionOnly, setDetectionOnly] = useState(false);
   const [filteredImages, setFilteredImages] = useState(images);
@@ -96,42 +83,15 @@ export const EventViewer = ({ images }) => {
   return (
     <div className={classes.layout}>
       <div>
-        <div className={classes.header}>
-          <div className={classes.headerItem}>
-            <Checkbox
-              id="detectionToggle"
-              checked={detectionOnly}
-              onChange={handleDetectionToggle}
-              size="sm"
-            />
-            <label htmlFor="detectionToggle">Show Detections Only</label>
-          </div>
-          <div>
-            <div className={classes.headerItem}>
-              <ActionIcon
-                size={20}
-                variant="transparent"
-                onClick={handlePreviousImage}
-                disabled={currentImageIndex === 0}
-                onMouseDown={(event) => event.preventDefault()}
-              >
-                <IconCaretLeft size="1rem" stroke={1.5} />
-              </ActionIcon>
-              <div className={classes.indexLabel}>
-                {currentImageIndex + 1} / {filteredImages.length}
-              </div>
-              <ActionIcon
-                size={20}
-                variant="transparent"
-                onClick={handleNextImage}
-                disabled={currentImageIndex === filteredImages.length - 1}
-                onMouseDown={(event) => event.preventDefault()}
-              >
-                <IconCaretRight size="1rem" stroke={1.5} />
-              </ActionIcon>
-            </div>
-          </div>
-        </div>
+        <Header
+          toggle={detectionOnly}
+          handleToggle={handleDetectionToggle}
+          next={handleNextImage}
+          previous={handlePreviousImage}
+          index={currentImageIndex}
+          min={0}
+          max={filteredImages.length}
+        />
         {filteredImages.length > 0 && (
           <img src={filteredImages[currentImageIndex].jpg} alt="current-scan" />
         )}
