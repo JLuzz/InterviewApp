@@ -27,6 +27,10 @@ const useStyles = createUseStyles({
   indexLabel: {
     minWidth: 50,
   },
+  confidenceBar: {
+    display: "flex",
+    justifyContent: "space-between",
+  },
 });
 
 export const EventViewer = ({ images }) => {
@@ -149,7 +153,7 @@ export const EventViewer = ({ images }) => {
           {` Number of Detections: ${filteredImages[currentImageIndex].detectionsList.length}`}
         </div>
         <div>
-          <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <div className={classes.confidenceBar}>
             <div>Confidence</div>
             <div>{`${
               filteredImages[currentImageIndex].overallConf > 0
