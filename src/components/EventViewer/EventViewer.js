@@ -1,7 +1,8 @@
-import { createStyles, Progress } from "@mantine/core";
+import { createStyles } from "@mantine/core";
 import { useCallback, useEffect, useState } from "react";
 
 import { Header } from "./Header";
+import { Metadata } from "./Metadata";
 
 const useStyles = createStyles(() => ({
   layout: {
@@ -11,10 +12,6 @@ const useStyles = createStyles(() => ({
     alignContent: "center",
     width: "85%",
     height: "100%",
-  },
-  confidenceBar: {
-    display: "flex",
-    justifyContent: "space-between",
   },
 }));
 
@@ -95,33 +92,7 @@ export const EventViewer = ({ images }) => {
         {filteredImages.length > 0 && (
           <img src={filteredImages[currentImageIndex].jpg} alt="current-scan" />
         )}
-        {filteredImages[currentImageIndex]?.createdOn && (
-          <div>
-            {`Scan Timestamp: ${new Date(
-              filteredImages[currentImageIndex].createdOn
-            ).toLocaleString()}`}
-          </div>
-        )}
-        <div>
-          {`Noise floor metric: ${Math.floor(
-            filteredImages[currentImageIndex].noiseFloorMetric
-          )}`}
-        </div>
-        <div>
-          {` Number of Detections: ${filteredImages[currentImageIndex].detectionsList.length}`}
-        </div>
-        <div>
-          <div className={classes.confidenceBar}>
-            <div>Confidence</div>
-            <div>{`${
-              filteredImages[currentImageIndex].overallConf > 0
-                ? Math.floor(filteredImages[currentImageIndex].overallConf) +
-                  "%"
-                : "N/A"
-            }`}</div>
-          </div>
-          <Progress value={filteredImages[currentImageIndex].overallConf} />
-        </div>
+        <Metadata metadata={filteredImages[currentImageIndex]} />
       </div>
     </div>
   );
