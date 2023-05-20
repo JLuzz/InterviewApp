@@ -1,6 +1,6 @@
+import { Checkbox, Progress } from "@mantine/core";
 import { createUseStyles } from "react-jss";
 import { useCallback, useEffect, useState } from "react";
-import { Progress } from "@mantine/core";
 
 const useStyles = createUseStyles({
   layout: {
@@ -19,12 +19,9 @@ const useStyles = createUseStyles({
     justifyContent: "space-between",
     paddingBottom: 5,
   },
-  indexTracker: {
+  headerItem: {
     display: "flex",
     gap: 5,
-  },
-  progressBar: {
-    backgroundColor: "#f05423",
   },
 });
 
@@ -94,16 +91,16 @@ export const EventViewer = ({ images }) => {
     <div className={classes.layout}>
       <div>
         <div className={classes.header}>
-          <div>
-            <input
-              type="checkbox"
+          <div className={classes.headerItem}>
+            <Checkbox
               id="detectionToggle"
               checked={detectionOnly}
               onChange={handleDetectionToggle}
+              size="sm"
             />
             <label htmlFor="detectionToggle">Show Detections Only</label>
           </div>
-          <div className={classes.indexTracker}>
+          <div className={classes.headerItem}>
             <div>
               {currentImageIndex + 1} / {filteredImages.length}
             </div>
@@ -141,10 +138,7 @@ export const EventViewer = ({ images }) => {
                 : "N/A"
             }`}</div>
           </div>
-          <Progress
-            classNames={{ bar: classes.progressBar }}
-            value={filteredImages[currentImageIndex].overallConf}
-          />
+          <Progress value={filteredImages[currentImageIndex].overallConf} />
         </div>
       </div>
     </div>
