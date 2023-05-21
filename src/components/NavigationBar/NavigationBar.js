@@ -5,6 +5,7 @@ import {
   IconSettings,
   IconUser,
 } from "@tabler/icons-react";
+import { Link } from "react-router-dom";
 import { useState } from "react";
 import styled from "@emotion/styled";
 
@@ -82,54 +83,40 @@ export const NavigationBar = () => {
         <Group className={classes.header} position="apart">
           <Image src={KuvaLogo} alt="kuva-logo" />
         </Group>
-        <a
+        <Link
           className={cx(classes.link, {
             [classes.linkActive]: "Dashboard" === active,
           })}
-          href={""}
+          to="/dashboard"
           key={"Dashboard"}
-          onClick={(event) => {
-            event.preventDefault();
-            setActive("Dashboard");
-          }}
+          onClick={() => setActive("Dashboard")}
         >
           <IconDashboard className={classes.linkIcon} stroke={1.5} />
           <span>{"Dashboard"}</span>
-        </a>
-        <a
+        </Link>
+        <Link
           className={cx(classes.link, {
             [classes.linkActive]: "Notifications" === active,
           })}
-          href={""}
+          to="/notifications"
           key={"Notifications"}
-          onClick={(event) => {
-            event.preventDefault();
-            setActive("Notifications");
-          }}
+          onClick={() => setActive("Notifications")}
         >
           <IconBellRinging className={classes.linkIcon} stroke={1.5} />
           <span>{"Notifications"}</span>
-        </a>
+        </Link>
       </Navbar.Section>
 
       <Navbar.Section className={classes.footer}>
-        <a
-          href="#"
-          className={classes.link}
-          onClick={(event) => event.preventDefault()}
-        >
+        <Link to="/account" className={classes.link}>
           <IconUser className={classes.linkIcon} stroke={1.5} />
           <span>Account</span>
-        </a>
+        </Link>
 
-        <a
-          href="#"
-          className={classes.link}
-          onClick={(event) => event.preventDefault()}
-        >
+        <Link to="/settings" className={classes.link}>
           <IconSettings className={classes.linkIcon} stroke={1.5} />
           <span>Settings</span>
-        </a>
+        </Link>
       </Navbar.Section>
     </Navbar>
   );
