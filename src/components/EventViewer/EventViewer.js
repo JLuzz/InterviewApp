@@ -1,9 +1,11 @@
 import { createStyles } from "@mantine/core";
+import { toast } from "react-toastify";
 import { useCallback, useEffect, useState } from "react";
+import axios from "axios";
+
 import { Header } from "./Header";
 import { Metadata } from "./Metadata";
 import { Viewport } from "./Viewport";
-import axios from "axios";
 
 const useStyles = createStyles(() => ({
   layout: {
@@ -33,9 +35,17 @@ export const EventViewer = () => {
         setImages(response.data.scanResults);
         console.log(response);
       })
-      .catch(function (error) {
-        //TODO: this should display an error in the UI!
-        console.log(error);
+      .catch(() => {
+        toast.error("Error retrieving events", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
       });
   };
 
