@@ -1,9 +1,9 @@
 import { createStyles } from "@mantine/core";
 import { useCallback, useEffect, useState } from "react";
-
 import { Header } from "./Header";
 import { Metadata } from "./Metadata";
 import { Viewport } from "./Viewport";
+import axios from "axios";
 
 const useStyles = createStyles(() => ({
   layout: {
@@ -16,10 +16,28 @@ const useStyles = createStyles(() => ({
   },
 }));
 
-export const EventViewer = ({ images }) => {
+const baseURL = "http://localhost:7071";
+
+export const EventViewer = () => {
   const { classes } = useStyles();
+
+  const [images, setImages] = useState([]);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [filteredImages, setFilteredImages] = useState(images);
+
+  //TODO: API functions (more to be added) should be in their own file!
+  const getEvents = () => {
+    axios
+      .get(`${baseURL}/events`)
+      .then(function (response) {
+        setImages(response.data.scanResults);
+        console.log(response);
+      })
+      .catch(function (error) {
+        //TODO: this should display an error in the UI!
+        console.log(error);
+      });
+  };
 
   const handleNextImage = useCallback(
     () =>
@@ -48,6 +66,10 @@ export const EventViewer = ({ images }) => {
 
     setFilteredImages(images);
   };
+
+  useEffect(() => {
+    getEvents();
+  }, []);
 
   useEffect(() => {
     setCurrentImageIndex(0);
