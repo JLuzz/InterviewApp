@@ -92,7 +92,7 @@ export const NavigationBar = () => {
           onClick={() => setActive("Dashboard")}
         >
           <IconDashboard className={classes.linkIcon} stroke={1.5} />
-          <span>{"Dashboard"}</span>
+          <span>Dashboard</span>
         </Link>
         <Link
           className={cx(classes.link, {
@@ -103,17 +103,29 @@ export const NavigationBar = () => {
           onClick={() => setActive("Notifications")}
         >
           <IconBellRinging className={classes.linkIcon} stroke={1.5} />
-          <span>{"Notifications"}</span>
+          <span>Notifications</span>
         </Link>
       </Navbar.Section>
 
       <Navbar.Section className={classes.footer}>
-        <Link to="/account" className={classes.link}>
+        <Link
+          to="/account"
+          className={cx(classes.link, {
+            [classes.linkActive]: "Account" === active,
+          })}
+          onClick={() => setActive("Account")}
+        >
           <IconUser className={classes.linkIcon} stroke={1.5} />
           <span>Account</span>
         </Link>
 
-        <Link to="/settings" className={classes.link}>
+        <Link
+          to="/settings"
+          className={cx(classes.link, {
+            [classes.linkActive]: "Settings" === active,
+          })}
+          onClick={() => setActive("Settings")}
+        >
           <IconSettings className={classes.linkIcon} stroke={1.5} />
           <span>Settings</span>
         </Link>
