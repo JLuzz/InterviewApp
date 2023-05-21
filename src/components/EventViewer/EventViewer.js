@@ -3,6 +3,7 @@ import { useCallback, useEffect, useState } from "react";
 
 import { Header } from "./Header";
 import { Metadata } from "./Metadata";
+import { Viewport } from "./Viewport";
 
 const useStyles = createStyles(() => ({
   layout: {
@@ -72,9 +73,7 @@ export const EventViewer = ({ images }) => {
           min={0}
           max={filteredImages.length}
         />
-        {filteredImages.length > 0 && (
-          <img src={filteredImages[currentImageIndex].jpg} alt="current-scan" />
-        )}
+        <Viewport images={filteredImages} index={currentImageIndex} />
         <Metadata metadata={filteredImages[currentImageIndex]} />
       </div>
     </div>

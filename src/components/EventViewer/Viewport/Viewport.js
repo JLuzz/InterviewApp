@@ -1,0 +1,16 @@
+import styled from "@emotion/styled";
+
+import { DetectionBox } from "./DetectionBox";
+
+const Container = styled("div")({
+  position: "relative",
+});
+
+export const Viewport = ({ images, index }) => (
+  <Container>
+    {images[index].detectionsList.map(({ roicoordsList }) => (
+      <DetectionBox coordinates={roicoordsList} />
+    ))}
+    <img src={images[index].jpg} alt="current-scan" />
+  </Container>
+);
