@@ -34,7 +34,6 @@ export const EventViewer = () => {
       .get(`${baseURL}/events`)
       .then(function (response) {
         setImages(response.data.scanResults);
-        console.log(response);
       })
       .catch(() => {
         toast.error("Error retrieving events", {

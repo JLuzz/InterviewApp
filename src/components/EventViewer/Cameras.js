@@ -14,7 +14,6 @@ export const Cameras = () => {
     (async () => {
       try {
         const res = await axios.get(`${baseURL}/camera`);
-        console.log("res.data: ", res.data);
         setCameras(res.data);
         setSelected(res.data[0].deviceId);
       } catch (e) {
