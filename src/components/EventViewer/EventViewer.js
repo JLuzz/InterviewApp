@@ -1,7 +1,8 @@
 import { createStyles } from "@mantine/core";
-import { toast } from "react-toastify";
 import { useCallback, useEffect, useState } from "react";
-import axios from "axios";
+import { useSelector, useDispatch } from "react-redux";
+
+import { fetchImages } from "../../features/events/events-slice";
 
 import { Cameras } from "./Cameras";
 import { Header } from "./Header";
@@ -11,6 +12,7 @@ import { Viewport } from "./Viewport";
 const useStyles = createStyles(() => ({
   layout: {
     display: "flex",
+    flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
     alignContent: "center",
@@ -19,35 +21,13 @@ const useStyles = createStyles(() => ({
   },
 }));
 
-const baseURL = "http://localhost:7071";
-
 export const EventViewer = () => {
   const { classes } = useStyles();
+  const { images, status } = useSelector(({ events }) => events);
+  const dispatch = useDispatch();
 
-  const [images, setImages] = useState([]);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [filteredImages, setFilteredImages] = useState(images);
-
-  //TODO: API functions (more to be added) should be in their own file!
-  const getEvents = () => {
-    axios
-      .get(`${baseURL}/events`)
-      .then(function (response) {
-        setImages(response.data.scanResults);
-      })
-      .catch(() => {
-        toast.error("Error retrieving events", {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "dark",
-        });
-      });
-  };
 
   const handleNextImage = useCallback(
     () =>
@@ -78,8 +58,10 @@ export const EventViewer = () => {
   };
 
   useEffect(() => {
-    getEvents();
-  }, []);
+    if (status === "idle") {
+      dispatch(fetchImages());
+    }
+  }, [status, dispatch]);
 
   useEffect(() => {
     setCurrentImageIndex(0);
@@ -107,8 +89,8 @@ export const EventViewer = () => {
         />
         <Viewport images={filteredImages} index={currentImageIndex} />
         <Metadata metadata={filteredImages[currentImageIndex]} />
-        <Cameras />
       </div>
+      <Cameras />
     </div>
   );
 };
