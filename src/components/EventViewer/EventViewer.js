@@ -2,7 +2,11 @@ import { createStyles } from "@mantine/core";
 import { useCallback, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
-import { fetchImages } from "../../features/events/events-slice";
+import {
+  fetchImages,
+  setFilter,
+  selectFilteredImages,
+} from "../../features/events/events-slice";
 
 import { Cameras } from "./Cameras";
 import { Header } from "./Header";
@@ -23,18 +27,18 @@ const useStyles = createStyles(() => ({
 
 export const EventViewer = () => {
   const { classes } = useStyles();
-  const { images, status } = useSelector(({ events }) => events);
+  const { status } = useSelector((state) => state.events);
+  const images = useSelector(selectFilteredImages);
   const dispatch = useDispatch();
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [filteredImages, setFilteredImages] = useState(images);
 
   const handleNextImage = useCallback(
     () =>
       setCurrentImageIndex((currentImageIndex) =>
-        Math.min(currentImageIndex + 1, filteredImages.length - 1)
+        Math.min(currentImageIndex + 1, images.length - 1)
       ),
-    [filteredImages.length]
+    [images.length]
   );
   const handlePreviousImage = useCallback(
     () =>
@@ -46,15 +50,7 @@ export const EventViewer = () => {
 
   const handleDetectionToggle = (checked) => {
     setCurrentImageIndex(0);
-
-    if (checked) {
-      setFilteredImages(
-        images.filter((image) => image.detectionsList.length > 0)
-      );
-      return;
-    }
-
-    setFilteredImages(images);
+    dispatch(setFilter(checked));
   };
 
   useEffect(() => {
@@ -63,17 +59,8 @@ export const EventViewer = () => {
     }
   }, [status, dispatch]);
 
-  useEffect(() => {
-    setCurrentImageIndex(0);
-    setFilteredImages(images);
-  }, [images]);
-
   if (!images.length) {
     return <div>No Images Found</div>;
-  }
-
-  if (!filteredImages.length) {
-    return <div>No Gas Detections Found</div>;
   }
 
   return (
@@ -85,10 +72,10 @@ export const EventViewer = () => {
           previous={handlePreviousImage}
           index={currentImageIndex}
           min={0}
-          max={filteredImages.length}
+          max={images.length}
         />
-        <Viewport images={filteredImages} index={currentImageIndex} />
-        <Metadata metadata={filteredImages[currentImageIndex]} />
+        <Viewport images={images} index={currentImageIndex} />
+        <Metadata metadata={images[currentImageIndex]} />
       </div>
       <Cameras />
     </div>

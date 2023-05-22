@@ -1,9 +1,14 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import {
+  createSlice,
+  createAsyncThunk,
+  createSelector,
+} from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 import axios from "axios";
 
 const baseURL = "http://localhost:7071";
 
+//Thunks
 export const fetchImages = createAsyncThunk("events/fetchImages", async () => {
   try {
     const response = await axios.get(`${baseURL}/events`);
@@ -12,13 +17,32 @@ export const fetchImages = createAsyncThunk("events/fetchImages", async () => {
   } catch (error) {}
 });
 
+//Selectors
+const selectImages = (state) => state.events.images;
+const selectFilter = (state) => state.events.filter;
+
+export const selectFilteredImages = createSelector(
+  [selectImages, selectFilter],
+  (images, filter) => {
+    if (filter) return images.filter((item) => item.detectionsList.length > 0);
+
+    return images;
+  }
+);
+
+//Slice
 export const eventsSlice = createSlice({
   name: "events",
   initialState: {
-    filter: "",
+    filter: false,
     status: "idle",
     error: null,
     images: [],
+  },
+  reducers: {
+    setFilter: (state, action) => {
+      state.filter = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -46,5 +70,7 @@ export const eventsSlice = createSlice({
       });
   },
 });
+
+export const { setFilter } = eventsSlice.actions;
 
 export default eventsSlice.reducer;
