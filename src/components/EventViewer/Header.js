@@ -57,6 +57,7 @@ export const Header = ({ index, handleToggle, next, previous, max, min }) => {
       <div>
         <div className={classes.headerItem}>
           <ActionIcon
+            color="brand"
             size={20}
             variant="transparent"
             onClick={previous}
@@ -69,6 +70,7 @@ export const Header = ({ index, handleToggle, next, previous, max, min }) => {
             {index + 1} / {max}
           </div>
           <ActionIcon
+            color="brand"
             size={20}
             variant="transparent"
             onClick={next}
