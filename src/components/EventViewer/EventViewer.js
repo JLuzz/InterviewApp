@@ -1,7 +1,12 @@
 import { createStyles } from "@mantine/core";
-import { toast } from "react-toastify";
 import { useCallback, useEffect, useState } from "react";
-import axios from "axios";
+import { useSelector, useDispatch } from "react-redux";
+
+import {
+  fetchImages,
+  setFilter,
+  selectFilteredImages,
+} from "../../features/events/events-slice";
 
 import { Cameras } from "./Cameras";
 import { Header } from "./Header";
@@ -11,6 +16,7 @@ import { Viewport } from "./Viewport";
 const useStyles = createStyles(() => ({
   layout: {
     display: "flex",
+    flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
     alignContent: "center",
@@ -19,43 +25,20 @@ const useStyles = createStyles(() => ({
   },
 }));
 
-const baseURL = "http://localhost:7071";
-
 export const EventViewer = () => {
   const { classes } = useStyles();
+  const { status } = useSelector((state) => state.events);
+  const images = useSelector(selectFilteredImages);
+  const dispatch = useDispatch();
 
-  const [images, setImages] = useState([]);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [filteredImages, setFilteredImages] = useState(images);
-
-  //TODO: API functions (more to be added) should be in their own file!
-  const getEvents = () => {
-    axios
-      .get(`${baseURL}/events`)
-      .then(function (response) {
-        setImages(response.data.scanResults);
-        console.log(response);
-      })
-      .catch(() => {
-        toast.error("Error retrieving events", {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "dark",
-        });
-      });
-  };
 
   const handleNextImage = useCallback(
     () =>
       setCurrentImageIndex((currentImageIndex) =>
-        Math.min(currentImageIndex + 1, filteredImages.length - 1)
+        Math.min(currentImageIndex + 1, images.length - 1)
       ),
-    [filteredImages.length]
+    [images.length]
   );
   const handlePreviousImage = useCallback(
     () =>
@@ -67,32 +50,17 @@ export const EventViewer = () => {
 
   const handleDetectionToggle = (checked) => {
     setCurrentImageIndex(0);
-
-    if (checked) {
-      setFilteredImages(
-        images.filter((image) => image.detectionsList.length > 0)
-      );
-      return;
-    }
-
-    setFilteredImages(images);
+    dispatch(setFilter(checked));
   };
 
   useEffect(() => {
-    getEvents();
-  }, []);
-
-  useEffect(() => {
-    setCurrentImageIndex(0);
-    setFilteredImages(images);
-  }, [images]);
+    if (status === "idle") {
+      dispatch(fetchImages());
+    }
+  }, [status, dispatch]);
 
   if (!images.length) {
     return <div>No Images Found</div>;
-  }
-
-  if (!filteredImages.length) {
-    return <div>No Gas Detections Found</div>;
   }
 
   return (
@@ -104,12 +72,12 @@ export const EventViewer = () => {
           previous={handlePreviousImage}
           index={currentImageIndex}
           min={0}
-          max={filteredImages.length}
+          max={images.length}
         />
-        <Viewport images={filteredImages} index={currentImageIndex} />
-        <Metadata metadata={filteredImages[currentImageIndex]} />
-        <Cameras />
+        <Viewport images={images} index={currentImageIndex} />
+        <Metadata metadata={images[currentImageIndex]} />
       </div>
+      <Cameras />
     </div>
   );
 };

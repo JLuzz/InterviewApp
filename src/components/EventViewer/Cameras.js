@@ -3,7 +3,12 @@ import { IconCamera } from "@tabler/icons-react";
 import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import styled from "@emotion/styled";
 
+const Header = styled("h2")({
+  marginTop: 15,
+  marginBottom: 5,
+});
 const baseURL = "http://localhost:7071";
 
 export const Cameras = () => {
@@ -14,7 +19,6 @@ export const Cameras = () => {
     (async () => {
       try {
         const res = await axios.get(`${baseURL}/camera`);
-        console.log("res.data: ", res.data);
         setCameras(res.data);
         setSelected(res.data[0].deviceId);
       } catch (e) {
@@ -36,8 +40,8 @@ export const Cameras = () => {
 
   return (
     <div>
-      <h2>Cameras</h2>
-      <Group position="center" my="xl">
+      <Header>Cameras</Header>
+      <Group position="center">
         {cameras.map((camera) => (
           <Button
             key={camera.deviceId}
