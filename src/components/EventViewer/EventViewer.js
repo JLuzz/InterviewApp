@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 
+import { Cameras } from "./Cameras";
 import { Header } from "./Header";
 import { Metadata } from "./Metadata";
 import { Viewport } from "./Viewport";
@@ -107,6 +108,7 @@ export const EventViewer = () => {
         />
         <Viewport images={filteredImages} index={currentImageIndex} />
         <Metadata metadata={filteredImages[currentImageIndex]} />
+        <Cameras />
       </div>
     </div>
   );
